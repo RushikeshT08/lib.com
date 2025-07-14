@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Borrowed History</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      background-color: var(--primary-color) !important;
+    }
+
+    .sidebar {
+      background-color: var(--primary-color);
+      min-height: calc(100vh - 56px);
+    }
+
+    .sidebar .nav-link {
+      color: rgba(255,255,255,0.8);
+      border-radius: 6px;
+      margin-bottom: 6px;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar .nav-link:hover {
+      color: white;
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .sidebar .nav-link.active {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .sidebar .nav-link i {
+      width: 20px;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: white;
+    }
+    .status-borrowed {
+    background-color: #17a2b8;
+    color: white;
+}
+    .returned { background-color: #28a745; }
+    .returned-late { background-color: #ffc107; color: #000; }
+    .overdue { background-color: #dc3545; }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .main-content {
+      padding: 20px;
+    }
+
+    .history-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .book-card {
+      transition: transform 0.2s;
+    }
+    
+    .book-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .book-cover {
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .genre-badge {
+      background-color: #6c757d;
+      margin-bottom: 10px;
+    }
+    
+    .book-footer {
+      padding: 10px 15px;
+      background-color: #f8f9fa;
+      border-top: 1px solid #eee;
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#"><i class="fas fa-book-open me-2"></i>Lib.com</a>
+      <div class="d-flex align-items-center">
+        <span class="navbar-text me-3">
+          <i class="fas fa-user-circle me-1"></i><span id="usernameDisplay">User</span>
+        </span>
+        <div class="dropdown">
+          <a class="btn btn-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fas fa-user me-2"></i>Account
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="user-profile.html"><i class="fas fa-user-edit me-2"></i>Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="login.html" id="logoutButton"
+                  ><i class="fas fa-sign-out-alt me-2"></i>Logout</a
+                >
+              </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid flex-grow-1">
+    <div class="row">
+      <!-- Sidebar -->
+      <aside class="col-md-3 col-lg-2 sidebar text-white p-3">
+        <h5 class="text-white mb-4"><i class="fas fa-user-circle me-2"></i>My Account</h5>
+        <nav class="nav flex-column">
+          <a class="nav-link" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+          <a class="nav-link" href="user-profile.html"><i class="fas fa-user-edit"></i> User Profile</a>
+          <a class="nav-link" href="return-status.html"><i class="fas fa-exchange-alt"></i> Return Status</a>
+          <a class="nav-link active" href="history.html"><i class="fas fa-history"></i> Book borrow</a>
+          <a class="nav-link" href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
+          <a class="nav-link" href="account-settings.html"><i class="fas fa-cog"></i> Settings</a>
+          <a class="nav-link mt-4" href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="col-md-9 col-lg-10 main-content">
+        <div class="header">
+          <h2><i class="fas fa-history me-2"></i>Borrowed History</h2>
+          <p class="text-muted">View your complete borrowing history and borrow new books</p>
+        </div>
+
+        <!-- Available Books Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div>
+              <i class="fas fa-book me-2"></i>Available Books
+            </div>
+            <div class="search-container" style="width: 300px;">
+              <div class="input-group">
+                <input type="text" class="form-control" id="bookSearch" placeholder="Search books...">
+                <button class="btn btn-light" type="button" id="searchButton">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="booksContainer">
+              <!-- Books will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Borrowing History Section -->
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <i class="fas fa-history me-2"></i>Your Borrowing History
+          </div>
+          <div class="card-body">
+            <div id="borrowingHistory">
+              <!-- Borrowing history will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer class="text-center py-3 border-top bg-white mt-4">
+    <div class="container">
+      <small class="text-muted">&copy; 2024 Library Management System | v2.1.0</small>
+    </div>
+  </footer>
+
+  <!-- Book Borrow Modal -->
+  <div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="borrowModalLabel">Borrow Book</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="borrowBookForm">
+            <input type="hidden" id="userId">
+            <input type="hidden" id="bookId">
+            <input type="hidden" id="bookTitle">
+            <input type="hidden" id="genre">
+            
+            <div class="mb-3">
+              <label for="borrowDate" class="form-label">Borrow Date</label>
+              <input type="date" class="form-control" id="borrowDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="returnDate" class="form-label">Return Date</label>
+              <input type="date" class="form-control" id="returnDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" required>
+                <option value="Borrowed">Borrowed</option>
+        
+              </select>
+            </div>
+            <div id="responseMessage" class="mt-3"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="confirmBorrow">Borrow Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Configuration
+    const config = {
+      booksApiUrl: "http://localhost:8080/api/books",
+      borrowApiUrl: "http://localhost:8080/api/bookborrows",
+      placeholderImage: "https://via.placeholder.com/300x450?text=No+Cover",
+      defaultAuthor: "Unknown Author",
+      defaultTitle: "Untitled Book"
+    };
+
+    // DOM Elements
+    const elements = {
+      booksContainer: document.getElementById("booksContainer"),
+      borrowingHistory: document.getElementById("borrowingHistory"),
+      usernameDisplay: document.getElementById("usernameDisplay"),
+      logoutButton: document.getElementById("logoutButton"),
+      logoutLink: document.getElementById("logoutLink"),
+      borrowModal: new bootstrap.Modal(document.getElementById('borrowModal')),
+      confirmBorrow: document.getElementById('confirmBorrow'),
+      borrowBookForm: document.getElementById('borrowBookForm'),
+      responseMessage: document.getElementById('responseMessage'),
+      bookSearch: document.getElementById('bookSearch'),
+      searchButton: document.getElementById('searchButton')
+    };
+
+    let currentUser = null;
+    let currentBookToBorrow = null;
+
+    function init() {
+      checkAuthentication();
+      setupEventListeners();
+      fetchAvailableBooks();
+      fetchBorrowingHistory();
+    }
+
+    function checkAuthentication() {
+      currentUser = JSON.parse(sessionStorage.getItem("loggedInUser")) || 
+                    JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!currentUser) {
+        window.location.href = "login.html";
+        return;
+      }
+      document.getElementById('userId').value = currentUser.id;
+      elements.usernameDisplay.textContent = currentUser.fullName || currentUser.username;
+    }
+
+    function setupEventListeners() {
+      elements.logoutButton.addEventListener('click', handleLogout);
+      elements.logoutLink.addEventListener('click', handleLogout);
+      elements.confirmBorrow.addEventListener('click', handleBorrowSubmit);
+      elements.searchButton.addEventListener('click', handleSearch);
+      elements.bookSearch.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+          handleSearch();
+        }
+      });
+    }
+
+    function handleLogout(e) {
+      e.preventDefault();
+      sessionStorage.removeItem('loggedInUser');
+      localStorage.removeItem('loggedInUser');
+      sessionStorage.removeItem('borrowedBooks');
+      window.location.href = '/login.html';
+    }
+
+    function fetchAvailableBooks() {
+      fetch(config.booksApiUrl)
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to fetch books");
+          return response.json();
+        })
+        .then(books => {
+          renderAvailableBooks(books);
+        })
+        .catch(error => {
+          console.error("Book Fetch Failed:", error.message);
+          elements.booksContainer.innerHTML = `
+            <div class="col-12">
+              <div class="alert alert-danger text-center py-4">
+                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                <h5 class="alert-heading">Error Loading Books</h5>
+                <p class="mb-0">${error.message}</p>
+              </div>
+            </div>`;
+        });
+    }
+
+    function renderAvailableBooks(books) {
+      if (!books || books.length === 0) {
+        elements.booksContainer.innerHTML = `
+          <div class="col-12">
+            <div class="alert alert-info text-center py-4">
+              <i class="fas fa-book-open fa-2x mb-3 text-muted"></i>
+              <h5 class="alert-heading">No books available</h5>
+              <p class="mb-0">Check back later for new arrivals.</p>
+            </div>
+          </div>`;
+        return;
+      }
+
+      elements.booksContainer.innerHTML = books.map(book => {
+        const title = book.title || book.Title || book.bookTitle || config.defaultTitle;
+        const author = book.author || book.Author || book.authorName || config.defaultAuthor;
+        const genre = book.genre || book.Genre || "Unknown";
+        const description = book.description || book.Description || book.desc || "No description available.";
+        const imageUrl = book.bookUrl || book.imageUrl || book.coverImage || config.placeholderImage;
+        const bookId = book.id || book.bookId || book.ID;
+
+        return `
+          <div class="col">
+            <div class="card book-card h-100">
+              <img src="${imageUrl}" class="card-img-top book-cover" alt="${title}" onerror="this.src='${config.placeholderImage}'">
+              <div class="card-body">
+                <span class="badge genre-badge">${genre}</span>
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text author"><i class="fas fa-user-pen me-1"></i>${author}</p>
+                <p class="card-text description">${description}</p>
+              </div>
+              <div class="book-footer">
+                <button class="btn btn-sm btn-primary borrow-btn" 
+                        data-book-id="${bookId}"
+                        data-book-title="${title}"
+                        data-genre="${genre}">
+                  <i class="fas fa-hand-holding me-1"></i> Borrow
+                </button>
+              </div>
+            </div>
+          </div>`;
+      }).join("");
+
+      // Add event listeners to all borrow buttons
+      document.querySelectorAll('.borrow-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          currentBookToBorrow = {
+            id: this.getAttribute('data-book-id'),
+            title: this.getAttribute('data-book-title'),
+            genre: this.getAttribute('data-genre')
+          };
+          
+          // Set values in the form
+          document.getElementById('bookId').value = currentBookToBorrow.id;
+          document.getElementById('bookTitle').value = currentBookToBorrow.title;
+          document.getElementById('genre').value = currentBookToBorrow.genre;
+          
+          // Set default dates
+          const today = new Date().toISOString().split('T')[0];
+          const nextWeek = new Date();
+          nextWeek.setDate(nextWeek.getDate() + 7);
+          const nextWeekFormatted = nextWeek.toISOString().split('T')[0];
+          
+          document.getElementById('borrowDate').value = today;
+          document.getElementById('returnDate').value = nextWeekFormatted;
+          
+          // Show the modal
+          elements.borrowModal.show();
+        });
+      });
+    }
+
+    function handleSearch() {
+      const searchTerm = elements.bookSearch.value.toLowerCase();
+      if (searchTerm.trim() === '') {
+        fetchAvailableBooks();
+        return;
+      }
+
+      fetch(config.booksApiUrl)
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to fetch books");
+          return response.json();
+        })
+        .then(books => {
+          const filteredBooks = books.filter(book => {
+            const title = (book.title || book.Title || book.bookTitle || '').toLowerCase();
+            const author = (book.author || book.Author || book.authorName || '').toLowerCase();
+            const genre = (book.genre || book.Genre || '').toLowerCase();
+            
+            return title.includes(searchTerm) || 
+                   author.includes(searchTerm) || 
+                   genre.includes(searchTerm);
+          });
+          renderAvailableBooks(filteredBooks);
+        })
+        .catch(error => {
+          console.error("Search Failed:", error.message);
+          elements.booksContainer.innerHTML = `
+            <div class="col-12">
+              <div class="alert alert-danger text-center py-4">
+                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                <h5 class="alert-heading">Search Error</h5>
+                <p class="mb-0">${error.message}</p>
+              </div>
+            </div>`;
+        });
+    }
+
+    function fetchBorrowingHistory() {
+      fetch(`${config.borrowApiUrl}/user/${currentUser.id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+      })
+      .then(history => {
+          // Filter to only show books with "Borrowed" status
+          const borrowedBooks = history.filter(item => item.status === "Borrowed");
+          renderBorrowingHistory(borrowedBooks);
+      })
+      .catch(error => {
+          console.error("History Fetch Failed:", error.message);
+          elements.borrowingHistory.innerHTML = `
+              <div class="alert alert-danger text-center py-4">
+                  <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                  <h5 class="alert-heading">Error Loading History</h5>
+                  <p class="mb-0">${error.message}</p>
+                  <p class="mt-2"><small>Endpoint: ${config.borrowApiUrl}/user/${currentUser.id}</small></p>
+              </div>`;
+      });
+    }
+
+    function renderBorrowingHistory(history) {
+      if (!history || history.length === 0) {
+        elements.borrowingHistory.innerHTML = `
+          <div class="alert alert-info text-center py-4">
+            <i class="fas fa-history fa-2x mb-3 text-muted"></i>
+            <h5 class="alert-heading">No currently borrowed books</h5>
+            <p class="mb-0">You don't have any books checked out at the moment.</p>
+          </div>`;
+        return;
+      }
+
+      elements.borrowingHistory.innerHTML = history.map(item => {
+        const statusClass = 'status-borrowed'; // Since we're only showing borrowed books
+        
+        // Format dates properly
+        const borrowDate = item.borrowDate ? new Date(item.borrowDate).toLocaleDateString() : 'N/A';
+        const returnDate = item.returnDate ? new Date(item.returnDate).toLocaleDateString() : 'N/A';
+        
+        return `
+          <div class="history-card">
+            <div class="row">
+              <div class="col-md-6">
+                <h5>${item.bookTitle || 'Unknown Book'}</h5>
+                <p class="text-muted">Book ID: ${item.bookId || 'N/A'}</p>
+                <span class="badge bg-info">${item.genre || 'Unknown'}</span>
+              </div>
+              <div class="col-md-6 text-md-end">
+                <p><strong>Borrowed:</strong> ${borrowDate}</p>
+                <p><strong>Due:</strong> ${returnDate}</p>
+                <span class="status-badge ${statusClass}">${item.status || 'Unknown'}</span>
+              </div>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    function handleBorrowSubmit() {
+  const borrowData = {
+    userId: document.getElementById('userId').value,
+    bookId: document.getElementById('bookId').value,
+    bookTitle: document.getElementById('bookTitle').value,
+    genre: document.getElementById('genre').value,
+    borrowDate: document.getElementById('borrowDate').value,
+    returnDate: document.getElementById('returnDate').value,
+    status: document.getElementById('status').value
+  };
+
+  // ✅ Step 1: Check if the book is already borrowed by this user
+  fetch(`${config.borrowApiUrl}/user/${borrowData.userId}`)
+    .then(response => {
+      if (!response.ok) throw new Error("Failed to fetch borrowing history");
+      return response.json();
+    })
+    .then(history => {
+      const alreadyBorrowed = history.some(item => 
+        item.bookId == borrowData.bookId && item.status === "Borrowed"
+      );
+
+      if (alreadyBorrowed) {
+        elements.responseMessage.innerHTML = `
+          <div class="alert alert-warning">You have already borrowed this book and have not returned it yet.</div>`;
+        return;
+      }
+
+      // ✅ Step 2: Proceed to fetch and update book ISBN
+      const updatedBookId = borrowData.bookId;
+
+      fetch(`${config.booksApiUrl}/${updatedBookId}`)
+        .then(response => response.json())
+        .then(book => {
+          const updatedIsbn = book.isbn - 1;
+          const updatedBookData = { ...book, isbn: updatedIsbn };
+
+          // ✅ Step 3: Update book's ISBN
+          return fetch(`${config.booksApiUrl}/${updatedBookId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(updatedBookData)
+          });
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to update book");
+          return response.json();
+        })
+        .then(() => {
+          // ✅ Step 4: Create borrow record
+          return fetch(config.borrowApiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(borrowData)
+          });
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to borrow book");
+          return response.json();
+        })
+        .then(() => {
+          elements.responseMessage.innerHTML = `
+            <div class="alert alert-success">Book borrowed successfully!</div>`;
+          fetchAvailableBooks();
+          fetchBorrowingHistory();
+          setTimeout(() => {
+            elements.borrowModal.hide();
+            elements.responseMessage.innerHTML = '';
+          }, 1500);
+        })
+        .catch(error => {
+          console.error("Borrowing Error:", error);
+          elements.responseMessage.innerHTML = `
+            <div class="alert alert-danger">${error.message}</div>`;
+        });
+
+    })
+    .catch(error => {
+      console.error("History Fetch Failed:", error);
+      elements.responseMessage.innerHTML = `
+        <div class="alert alert-danger">${error.message}</div>`;
+    });
+}
+
+
+
+    init();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+[
+    {
+        "fullName": "John Doe",
+        "userEmail": "john@example.com",
+        "bookTitle": "The Great Gatsby",
+        "borrowStatus": "Borrowed"
+    },
+    {
+        "fullName": "John Doe",
+        "userEmail": "john@example.com",
+        "bookTitle": "To Kill a Mockingbird",
+        "borrowStatus": "Borrowed"
+    },
+    {
+        "fullName": "Alice Williams",
+        "userEmail": "alice@example.com",
+        "bookTitle": "Clean Code",
+        "borrowStatus": "Borrowed"
+    },
+    {
+        "fullName": "Bob Smith",
+        "userEmail": "bob@example.com",
+        "bookTitle": "A Brief History of Time",
+        "borrowStatus": "Returned"
+    },
+    {
+        "fullName": "Carol Peterson",
+        "userEmail": "carol@example.com",
+        "bookTitle": "1984",
+        "borrowStatus": "Borrowed"
+    }
+]

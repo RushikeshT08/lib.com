@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lib.com - Reports</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-gray: #f8f9fa;
+      --dark-gray: #343a40;
+      --success-color: #28a745;
+    }
+
+body {
+  background-color: #f5f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background-color: var(--primary-color) !important;
+}
+
+.sidebar {
+  background-color: var(--primary-color);
+  min-height: calc(100vh - 56px);
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link {
+  color: rgba(255,255,255,0.8);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+  color: white;
+  background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar .nav-link.active {
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 500;
+}
+
+.sidebar .nav-link i {
+  width: 20px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.content {
+  padding: 20px;
+  background-color: #f5f7fa;
+  flex: 1;
+}
+
+footer {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.chart-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+  height: 100%;
+}
+
+.chart-title {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.chart-wrapper {
+  height: 300px;
+  position: relative;
+}
+
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Navbar -->
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#"><i class="fas fa-book me-2"></i>Lib.com</a>
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i> <span id="adminName">Admin</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid flex-grow-1">
+    <div class="row">
+      <!-- Sidebar -->
+      <aside class="col-md-3 col-lg-2 sidebar text-white p-3">
+        <h5 class="text-white mb-4"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h5>
+        <nav class="nav flex-column">
+          <a class="nav-link" href="admin-dashboard.html">
+            <i class="fas fa-home"></i> Dashboard
+          </a>
+          <a class="nav-link" href="person-management.html">
+            <i class="fas fa-users"></i> Person Management
+          </a>
+          <a class="nav-link" href="book.html">
+            <i class="fas fa-book"></i> Resources
+          </a>
+          <a class="nav-link" href="authors.html">
+            <i class="fas fa-user-edit"></i> Authors
+          </a>
+          <a class="nav-link active" href="reports.html">
+            <i class="fas fa-chart-bar"></i> Reports
+          </a>
+          <a class="nav-link" href="user-queries.html">
+            <i class="fas fa-question-circle"></i> User Queries
+          </a>
+          <a class="nav-link logout-link mt-4" href="#" id="logoutLink">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </nav>
+      </aside>
+
+```
+  <!-- Main Content -->
+  <main class="col-md-9 col-lg-10 content">
+    <h2 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Reports & Analytics</h2>
+
+    <!-- Charts Section -->
+    <div class="row">
+      <!-- Genre Distribution Pie Chart -->
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h4 class="chart-title"><i class="fas fa-chart-pie me-2"></i>Genre-wise Book Distribution</h4>
+          <div class="chart-wrapper">
+            <canvas id="genrePieChart"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Top Borrowed Books Bar Chart -->
+      <div class="col-md-6">
+        <div class="chart-container">
+          <h4 class="chart-title"><i class="fas fa-book-open me-2"></i>Top 5 Most Borrowed Books</h4>
+          <div class="chart-wrapper">
+            <canvas id="topBooksChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+```
+
+  </div>
+
+  <!-- Footer -->
+
+  <footer class="text-center py-3 border-top bg-white mt-auto">
+    <div class="container">
+      <small class="text-muted">&copy; 2024 Library Management System | v2.1.0</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+     // Logout functionality
+    document.getElementById("logoutLink").addEventListener("click", function() {
+      // Clear session storage or perform logout actions here
+      window.location.href = "/login.html";
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      // Clear session storage or perform logout actions here
+      window.location.href = "/login.html";
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fetch data from your API endpoints
+      Promise.all([
+        fetch('http://localhost:8080/api/books').then(res => res.json()),
+        fetch('http://localhost:8080/api/bookborrows').then(res => res.json())
+      ])
+      .then(([booksData, borrowsData]) => {
+        // Process data for charts
+        const genreDistribution = processGenreData(booksData);
+        const topBooks = processTopBooksData(booksData, borrowsData);
+        
+        // Render charts
+        renderGenrePieChart(genreDistribution);
+        renderTopBooksChart(topBooks);
+      })
+      .catch(error => console.error('Error loading data:', error));
+
+      // Process book data to get genre distribution
+      function processGenreData(books) {
+        const genreCounts = {};
+        
+        books.forEach(book => {
+          const genre = book.genre || 'Unknown';
+          genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+        });
+        
+        return {
+          labels: Object.keys(genreCounts),
+          data: Object.values(genreCounts),
+          colors: generateColors(Object.keys(genreCounts).length)
+        };
+      }
+
+      // Process data to get top 5 most borrowed books
+      function processTopBooksData(books, borrows) {
+  // Map book IDs to book titles
+  const bookIdToTitle = {};
+  books.forEach(book => {
+    bookIdToTitle[book.id] = book.bookTitle;
+  });
+
+  // Count borrows for each book
+  const bookBorrowCounts = {};
+  borrows.forEach(borrow => {
+    const bookId = borrow.bookId;
+    if (!bookId) return;
+
+    const title = bookIdToTitle[bookId] || `Book ID: ${bookId}`;
+    bookBorrowCounts[title] = (bookBorrowCounts[title] || 0) + 1;
+  });
+
+  // Sort and get top 5
+  const sortedBooks = Object.entries(bookBorrowCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  return {
+    labels: sortedBooks.map(item => item[0]),
+    data: sortedBooks.map(item => item[1])
+  };
+}
+
+
+      // Generate random colors for charts
+      function generateColors(count) {
+        const colors = [];
+        for (let i = 0; i < count; i++) {
+          colors.push(`hsl(${(i * 360 / count)}, 70%, 60%)`);
+        }
+        return colors;
+      }
+
+      // Render Genre Pie Chart
+      function renderGenrePieChart(data) {
+        const ctx = document.getElementById('genrePieChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              data: data.data,
+              backgroundColor: data.colors,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = Math.round((value / total) * 100);
+                    return `${label}: ${value} (${percentage}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Render Top Books Bar Chart
+      function renderTopBooksChart(data) {
+        const ctx = document.getElementById('topBooksChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Borrow Count',
+              data: data.data,
+              backgroundColor: '#3498db',
+              borderColor: '#2980b9',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Number of Borrows'
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'Book Title'
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `Borrows: ${context.raw}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
+

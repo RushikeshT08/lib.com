@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Current Loans</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .loan-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+
+    .loan-table th, .loan-table td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .loan-table th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .actions button {
+      margin-right: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .btn-add {
+      background-color: #27ae60;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .btn-edit {
+      background-color: #f1c40f;
+      color: white;
+    }
+
+    .btn-delete {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 2rem;
+      width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #333;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .modal-buttons {
+      text-align: right;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Current Loans</h1>
+
+  <button class="btn btn-add" onclick="openModal()">Add Loan</button>
+
+  <table class="loan-table">
+    <thead>
+      <tr>
+        <th>Book Title</th>
+        <th>Borrower</th>
+        <th>Due Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="loanList"></tbody>
+  </table>
+
+  <!-- Modal -->
+  <div class="modal" id="loanModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Add Loan</h3>
+      <input type="text" id="bookTitle" placeholder="Book Title" />
+      <input type="text" id="borrower" placeholder="Borrower Name" />
+      <input type="date" id="dueDate" />
+      <div class="modal-buttons">
+        <button class="btn btn-add" onclick="saveLoan()">Save</button>
+        <button class="btn btn-delete" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let loans = JSON.parse(localStorage.getItem("currentLoans")) || [];
+    let editingIndex = null;
+
+    function renderLoans() {
+      const loanList = document.getElementById("loanList");
+      loanList.innerHTML = "";
+
+      loans.forEach((loan, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${loan.bookTitle}</td>
+          <td>${loan.borrower}</td>
+          <td>${loan.dueDate}</td>
+          <td class="actions">
+            <button class="btn btn-edit" onclick="editLoan(${index})">Edit</button>
+            <button class="btn btn-delete" onclick="deleteLoan(${index})">Delete</button>
+          </td>
+        `;
+        loanList.appendChild(row);
+      });
+    }
+
+    function openModal(editIndex = null) {
+      document.getElementById("loanModal").style.display = "block";
+      document.getElementById("modalTitle").innerText = editIndex !== null ? "Edit Loan" : "Add Loan";
+      editingIndex = editIndex;
+
+      if (editIndex !== null) {
+        const loan = loans[editIndex];
+        document.getElementById("bookTitle").value = loan.bookTitle;
+        document.getElementById("borrower").value = loan.borrower;
+        document.getElementById("dueDate").value = loan.dueDate;
+      } else {
+        document.getElementById("bookTitle").value = "";
+        document.getElementById("borrower").value = "";
+        document.getElementById("dueDate").value = "";
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("loanModal").style.display = "none";
+      editingIndex = null;
+    }
+
+    function saveLoan() {
+      const bookTitle = document.getElementById("bookTitle").value.trim();
+      const borrower = document.getElementById("borrower").value.trim();
+      const dueDate = document.getElementById("dueDate").value;
+
+      if (!bookTitle || !borrower || !dueDate) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const newLoan = { bookTitle, borrower, dueDate };
+
+      if (editingIndex !== null) {
+        loans[editingIndex] = newLoan;
+      } else {
+        loans.push(newLoan);
+      }
+
+      localStorage.setItem("currentLoans", JSON.stringify(loans));
+      closeModal();
+      renderLoans();
+    }
+
+    function deleteLoan(index) {
+      if (confirm("Are you sure you want to delete this loan?")) {
+        loans.splice(index, 1);
+        localStorage.setItem("currentLoans", JSON.stringify(loans));
+        renderLoans();
+      }
+    }
+
+    function editLoan(index) {
+      openModal(index);
+    }
+
+    window.onload = renderLoans;
+  </script>
+</body>
+</html>

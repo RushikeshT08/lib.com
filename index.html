@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library System Login</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-image: url("http://redonline.cdnds.net/main/thumbs/25788/stack_of_books.jpg");
+        background-size: cover;
+        height: 100vh;
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-container {
+        background-color: white;
+        border-radius: 10px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .login-container h2 {
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .form-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: none;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: #2575fc;
+        box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        border: none;
+        padding: 12px;
+        border-radius: 5px;
+        width: 100%;
+        transition: background 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+      }
+
+      .invalid-feedback {
+        font-size: 12px;
+      }
+
+      .login-footer {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 15px;
+      }
+
+      .login-footer a {
+        color: #2575fc;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .login-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="col-md-6 login-container">
+        <h2 class="text-primary">Library Login</h2>
+        <form id="loginForm" novalidate>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address *</label>
+            <input type="email" class="form-control" id="email" required />
+            <div class="invalid-feedback">
+              Please enter a valid email address.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password *</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              required
+              minlength="6"
+            />
+            <div class="invalid-feedback">
+              Password must be at least 6 characters.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+          <div class="error-message" id="error"></div>
+        </form>
+        <div class="login-footer">
+          <p>Don't have an account? <a href="register.html">Sign up</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const apiUrl = "http://localhost:8080/api/registrations";
+      const username = "user";
+      const password = "user";
+      const basicAuth = btoa(`${username}:${password}`);
+    
+      document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (this.checkValidity()) {
+          verify();
+        } else {
+          this.classList.add('was-validated');
+        }
+      });
+    
+      function verify() {
+        const email = document.getElementById("email").value.trim();
+        const passwordInput = document.getElementById("password").value.trim();
+        const errorElement = document.getElementById("error");
+        errorElement.textContent = "";
+    
+        fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Basic ${basicAuth}`,
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+            return res.json();
+          })
+          .then(register => {
+            const user = register.find(u => u.email === email && u.password === passwordInput);
+    
+            if (user) {
+              // Store user data
+              const userData = {
+                id: user.id,
+                username: user.email,
+                fullName: user.fullName || user.userName,
+                userType: user.userType,
+                email: user.email,
+                isAdmin: user.email === 'admin12@gmail.com' // Add admin check
+              };
+              
+              sessionStorage.setItem("loggedInUser", JSON.stringify(userData));
+              localStorage.setItem("loggedInUser", JSON.stringify(userData));
+              
+              // Redirect based on user type
+              if (userData.isAdmin) {
+                window.location.href = "/pages/admin-dashboard.html";
+              } else {
+                window.location.href = "/pages/admin-dashboard.html"; // Regular user dashboard
+              }
+            } else {
+              errorElement.textContent = "Invalid email or password.";
+            }
+          })
+          .catch(err => {
+            console.error("Error fetching users:", err);
+            errorElement.textContent = "Something went wrong. Try again.";
+          });
+      }
+    </script>
+  </body>
+</html>

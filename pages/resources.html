@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resource Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: normal;
+      font-size: 14px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    td a:hover {
+      text-decoration: underline;
+    }
+    .actions {
+      text-align: center;
+    }
+    .edit, .delete {
+      padding: 5px 10px;
+      font-size: 12px;
+      margin: 3px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .edit {
+      background-color: #ffc107;
+      color: white;
+    }
+    .delete {
+      background-color: #dc3545;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Resource Management</h2>
+
+    <!-- Resource Form -->
+    <form id="resourceForm" onsubmit="saveResource(event)">
+      <input type="hidden" id="resourceId" />
+      
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" required />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="link">Link</label>
+        <input type="url" id="link" required />
+      </div>
+      <button type="submit">Save Resource</button>
+    </form>
+
+    <!-- Resources Table -->
+    <h3>Resources</h3>
+    <table id="resourcesTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Link</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+     // Logout functionality
+    document.getElementById("logoutLink").addEventListener("click", function() {
+      // Clear session storage or perform logout actions here
+      window.location.href = "/login.html";
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      // Clear session storage or perform logout actions here
+      window.location.href = "/login.html";
+    });
+    // Load resources from localStorage
+    function loadResources() {
+      const resources = JSON.parse(localStorage.getItem("resources")) || [];
+      const tableBody = document.querySelector('#resourcesTable tbody');
+      tableBody.innerHTML = '';
+
+      resources.forEach(resource => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${resource.name}</td>
+          <td>${resource.description}</td>
+          <td><a href="${resource.link}" target="_blank">View</a></td>
+          <td class="actions">
+            <button class="edit" onclick="editResource('${resource.resourceId}')">Edit</button>
+            <button class="delete" onclick="deleteResource('${resource.resourceId}')">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Save or update resource
+    function saveResource(event) {
+      event.preventDefault();
+
+      const resourceId = document.getElementById('resourceId').value;
+      const name = document.getElementById('name').value;
+      const description = document.getElementById('description').value;
+      const link = document.getElementById('link').value;
+
+      let resources = JSON.parse(localStorage.getItem("resources")) || [];
+
+      if (resourceId) {
+        resources = resources.map(resource =>
+          resource.resourceId === resourceId ? { resourceId, name, description, link } : resource
+        );
+      } else {
+        resources.push({ resourceId: Date.now().toString(), name, description, link });
+      }
+
+      localStorage.setItem("resources", JSON.stringify(resources));
+      document.getElementById('resourceForm').reset();
+      loadResources();
+    }
+
+    // Edit resource
+    function editResource(resourceId) {
+      const resources = JSON.parse(localStorage.getItem("resources"));
+      const resource = resources.find(r => r.resourceId === resourceId);
+
+      document.getElementById('resourceId').value = resource.resourceId;
+      document.getElementById('name').value = resource.name;
+      document.getElementById('description').value = resource.description;
+      document.getElementById('link').value = resource.link;
+    }
+
+    // Delete resource
+    function deleteResource(resourceId) {
+      let resources = JSON.parse(localStorage.getItem("resources"));
+      resources = resources.filter(resource => resource.resourceId !== resourceId);
+      localStorage.setItem("resources", JSON.stringify(resources));
+      loadResources();
+    }
+
+    // Initialize page
+    window.onload = loadResources;
+  </script>
+
+</body>
+</html>

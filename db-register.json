@@ -1,0 +1,638 @@
+{
+  "libraryUsers": [
+    {
+      "id": "1",
+      "fullName": "John Doe",
+      "email": "john@example.com",
+      "username": "johndoe",
+      "password": "john123",
+      "borrowedBooks": [
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "borrowDate": "2025-04-12",
+          "returnDate": "2025-04-19",
+          "status": "Borrowed"
+        },
+        {
+          "title": "Moby Dick",
+          "department": "Thriller"
+        }
+      ],
+      "returnedBooks": [
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "borrowDate": "2025-04-10",
+          "returnDate": "2025-04-17",
+          "status": "Returned"
+        },
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "fullName": "Admin User",
+      "email": "admin@example.com",
+      "username": "admin",
+      "password": "admin123",
+      "borrowedBooks": [],
+      "returnedBooks": [
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "borrowDate": "2025-04-12",
+          "returnDate": "2025-04-23",
+          "status": "Returned"
+        }
+      ]
+    },
+    {
+      "id": "10c2",
+      "fullName": "Rushikesh thange",
+      "email": "rushikeshthange78@gmail.com",
+      "username": "Rushikesh",
+      "password": "Rushi@78",
+      "borrowedBooks": [
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy"
+        },
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy"
+        }
+      ],
+      "returnedBooks": [
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "borrowDate": "2025-04-14",
+          "returnDate": "2025-04-23",
+          "status": "Returned"
+        },
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        },
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-23"
+        },
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-24"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-04-24"
+        },
+        {
+          "title": "Moby Dick",
+          "department": "Thriller",
+          "status": "Returned",
+          "returnDate": "2025-04-24"
+        },
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-24"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-04-24"
+        },
+        {
+          "title": "War and Peace",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-24"
+        },
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-04-25"
+        },
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-05-01"
+        },
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-05-01"
+        },
+        {
+          "title": "Moby Dick",
+          "department": "Thriller",
+          "status": "Returned",
+          "returnDate": "2025-05-01"
+        },
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-05-01"
+        }
+      ]
+    },
+    {
+      "id": "13a8",
+      "fullName": "rus thange",
+      "email": "rbww@gmail.com",
+      "username": "rus",
+      "password": "rus123",
+      "borrowedBooks": [],
+      "returnedBooks": [
+        {
+          "title": "Moby Dick",
+          "department": "Thriller",
+          "borrowDate": "2025-04-13",
+          "returnDate": "2025-04-20",
+          "status": "Returned"
+        }
+      ]
+    },
+    {
+      "id": "c422",
+      "fullName": "sahil ghodke",
+      "email": "sahil12@gmail.com",
+      "username": "sahil12",
+      "password": "sahil@12",
+      "borrowedBooks": [
+        {
+          "title": "War and Peace",
+          "department": "Fantasy",
+          "borrowDate": "2025-04-15",
+          "returnDate": "2025-04-22",
+          "status": "Borrowed"
+        }
+      ],
+      "returnedBooks": []
+    },
+    {
+      "id": "6af2",
+      "fullName": "sahil patil",
+      "email": "sahil23@gmail.com",
+      "username": "sahil23",
+      "password": "sahil23",
+      "borrowedBooks": [],
+      "returnedBooks": [
+        {
+          "title": "Pride and Prejudice",
+          "department": "Horror",
+          "borrowDate": "2025-04-09",
+          "returnDate": "2025-04-16",
+          "status": "Returned"
+        }
+      ]
+    },
+    {
+      "id": "265e",
+      "fullName": "amey gharge",
+      "email": "amey12@gmail.com",
+      "username": "amey12",
+      "password": "amey12",
+      "borrowedBooks": [],
+      "returnedBooks": [
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "borrowDate": "2025-04-11",
+          "returnDate": "2025-04-18",
+          "status": "Returned"
+        }
+      ]
+    },
+    {
+      "id": "2b15",
+      "fullName": "abc defg",
+      "email": "abc123@gmail.com",
+      "username": "abc123",
+      "password": "abc123",
+      "borrowedBooks": [
+        {
+          "title": "The Great Gatsby",
+          "department": "Fantasy",
+          "borrowDate": "2025-04-16",
+          "returnDate": "2025-04-23",
+          "status": "Borrowed"
+        }
+      ],
+      "returnedBooks": [
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "status": "Returned",
+          "returnDate": "2025-05-03"
+        },
+        {
+          "title": "To Kill a Mockingbird",
+          "department": "Fantasy",
+          "status": "Returned",
+          "returnDate": "2025-05-03"
+        }
+      ]
+    },
+    {
+      "id": "1925",
+      "fullName": "vedant ghodke",
+      "email": "vg123@gmail.com",
+      "username": "vedant123",
+      "password": "Vedant@123",
+      "borrowedBooks": [
+        {
+          "title": "1984",
+          "department": "Mystery",
+          "borrowDate": "2025-04-17",
+          "returnDate": "2025-04-24",
+          "status": "Borrowed"
+        }
+      ],
+      "returnedBooks": []
+    },
+    {
+      "id": "42f2",
+      "fullName": "pravin ghodke",
+      "email": "pg123@gmail.com",
+      "username": "pravin123",
+      "password": "pravin@123",
+      "borrowedBooks": [],
+      "returnedBooks": []
+    },
+    {
+      "id": "1d44",
+      "fullName": "swapnil ghodke",
+      "email": "sg123@gmail.com",
+      "username": "swapnil123",
+      "password": "swapnil@123",
+      "borrowedBooks": [],
+      "returnedBooks": []
+    },
+    {
+      "id": "95d4",
+      "fullName": "shravan ghodke",
+      "email": "shravanghodke123@gmail.com",
+      "username": "shravanghodke123",
+      "password": "shravan123",
+      "borrowedBooks": [],
+      "returnedBooks": []
+    },
+    {
+      "id": "45cb",
+      "fullName": "abhi khan",
+      "email": "ak12@example.com",
+      "username": "abhi123",
+      "password": "Abhi@123",
+      "borrowedBooks": [],
+      "returnedBooks": []
+    },
+    {
+      "id": "49e8",
+      "fullName": "J.K. Rowling J.K. Rowling",
+      "email": "jk12@example.com",
+      "username": "jk123",
+      "password": "Jk@123456",
+      "borrowedBooks": [],
+      "returnedBooks": []
+    }
+  ],
+  "Books": [
+    {
+      "BookID": 1,
+      "Title": "The Great Gatsby",
+      "AuthorID": 1,
+      "Genre": "Fantasy",
+      "TotalCopies": 10,
+      "AvailableCopies": 5,
+      "id": "9d11"
+    },
+    {
+      "BookID": 2,
+      "Title": "To Kill a Mockingbird",
+      "AuthorID": 2,
+      "Genre": "Fantasy",
+      "TotalCopies": 7,
+      "AvailableCopies": 3,
+      "id": "cfff"
+    },
+    {
+      "BookID": 3,
+      "Title": "1984",
+      "AuthorID": 3,
+      "Genre": "Mystery",
+      "TotalCopies": 8,
+      "AvailableCopies": 2,
+      "id": "6c7d"
+    },
+    {
+      "BookID": 4,
+      "Title": "Moby Dick",
+      "AuthorID": 4,
+      "Genre": "Thriller",
+      "TotalCopies": 6,
+      "AvailableCopies": 1,
+      "id": "aeb5"
+    },
+    {
+      "BookID": 5,
+      "Title": "War and Peace",
+      "AuthorID": 5,
+      "Genre": "Fantasy",
+      "TotalCopies": 12,
+      "AvailableCopies": 6,
+      "id": "f7a1"
+    },
+    {
+      "BookID": "6",
+      "Title": "Pride and Prejudice",
+      "AuthorID": "6",
+      "Genre": "Horror",
+      "TotalCopies": "5",
+      "AvailableCopies": "17",
+      "id": "f22c"
+    },
+    {
+      "BookID": "7",
+      "Title": "ubjagba",
+      "AuthorID": "1",
+      "Genre": "Horror",
+      "TotalCopies": "5",
+      "AvailableCopies": "7",
+      "id": "b27f"
+    },
+    {
+      "BookID": "8",
+      "Title": "Harry Potter",
+      "AuthorID": "4",
+      "Genre": "Horror",
+      "TotalCopies": "5",
+      "AvailableCopies": "8",
+      "id": "cd61"
+    },
+    {
+      "id": "373b",
+      "BookID": "9",
+      "Title": "this or that for food",
+      "AuthorID": "9",
+      "Genre": "general",
+      "TotalCopies": "12",
+      "AvailableCopies": "11"
+    }
+  ],
+  "borrowRecords": [
+    {
+      "recordId": "BR001",
+      "userEmail": "john@example.com",
+      "bookId": "9d11",
+      "borrowDate": "2025-04-10",
+      "returnDate": "2025-04-17",
+      "status": "Returned",
+      "id": "8f57"
+    },
+    {
+      "recordId": "BR002",
+      "userEmail": "admin@example.com",
+      "bookId": "cfff",
+      "borrowDate": "2025-04-12",
+      "returnDate": "2025-04-19",
+      "status": "Borrowed",
+      "id": "0c39"
+    },
+    {
+      "recordId": "BR003",
+      "userEmail": "rushikeshthange78@gmail.com",
+      "bookId": "6c7d",
+      "borrowDate": "2025-04-14",
+      "returnDate": "2025-04-21",
+      "status": "Borrowed",
+      "id": "be2d"
+    },
+    {
+      "recordId": "BR004",
+      "userEmail": "rbww@gmail.com",
+      "bookId": "aeb5",
+      "borrowDate": "2025-04-13",
+      "returnDate": "2025-04-20",
+      "status": "Returned",
+      "id": "eb36"
+    },
+    {
+      "recordId": "BR005",
+      "userEmail": "sahil12@gmail.com",
+      "bookId": "f7a1",
+      "borrowDate": "2025-04-15",
+      "returnDate": "2025-04-22",
+      "status": "Borrowed",
+      "id": "e8ff"
+    },
+    {
+      "recordId": "BR006",
+      "userEmail": "sahil23@gmail.com",
+      "bookId": "f22c",
+      "borrowDate": "2025-04-09",
+      "returnDate": "2025-04-16",
+      "status": "Returned",
+      "id": "fd86"
+    },
+    {
+      "recordId": "BR007",
+      "userEmail": "amey12@gmail.com",
+      "bookId": "cfff",
+      "borrowDate": "2025-04-11",
+      "returnDate": "2025-04-18",
+      "status": "Returned",
+      "id": "6547"
+    },
+    {
+      "recordId": "BR008",
+      "userEmail": "abc123@gmail.com",
+      "bookId": "9d11",
+      "borrowDate": "2025-04-16",
+      "returnDate": "2025-04-23",
+      "status": "Borrowed",
+      "id": "a454"
+    },
+    {
+      "recordId": "BR009",
+      "userEmail": "vg123@gmail.com",
+      "bookId": "6c7d",
+      "borrowDate": "2025-04-17",
+      "returnDate": "2025-04-24",
+      "status": "Borrowed",
+      "id": "6e39"
+    }
+  ],
+  "Authors": [
+    {
+      "AuthorID": 2,
+      "Name": "George R. Martin",
+      "Bio": "Author of A Song of Ice and Fire.",
+      "id": "ff9d"
+    },
+    {
+      "AuthorID": 3,
+      "Name": "Agatha Christie",
+      "Bio": "Famous for detective novels.",
+      "id": "b77a"
+    },
+    {
+      "Name": "Dan P Brown",
+      "Bio": "Known for The Da Vinci Code.",
+      "AuthorID": 4,
+      "id": "ac30"
+    },
+    {
+      "AuthorID": 5,
+      "Name": "J.R.R. Tolkien",
+      "Bio": "Author of The Lord of the Rings.",
+      "id": "a9d2"
+    },
+    {
+      "AuthorID": 6,
+      "Name": "Stephen King",
+      "Bio": "Famous for horror and thriller novels.",
+      "id": "76e1"
+    },
+    {
+      "AuthorID": 7,
+      "Name": "Paulo Coelho",
+      "Bio": "Known for The Alchemist.",
+      "id": "fccd"
+    },
+    {
+      "AuthorID": 8,
+      "Name": "Mark Twain",
+      "Bio": "Famous American writer.",
+      "id": "0a2f"
+    },
+    {
+      "AuthorID": 9,
+      "Name": "Ernest Hemingway",
+      "Bio": "Nobel Prize-winning author.",
+      "id": "ba50"
+    },
+    {
+      "AuthorID": 10,
+      "Name": "Jane Austen",
+      "Bio": "Known for Pride and Prejudice.",
+      "id": "4d2c"
+    },
+    {
+      "AuthorID": 11,
+      "Name": "C.S. Lewis",
+      "Bio": "Author of The Chronicles of Narnia.",
+      "id": "2109"
+    },
+    {
+      "AuthorID": 12,
+      "Name": "Isaac Asimov",
+      "Bio": "Famous science fiction writer.",
+      "id": "f92c"
+    },
+    {
+      "AuthorID": 13,
+      "Name": "Suzanne Collins",
+      "Bio": "Author of The Hunger Games.",
+      "id": "f18d"
+    },
+    {
+      "AuthorID": 14,
+      "Name": "Rick Riordan",
+      "Bio": "Known for Percy Jackson series.",
+      "id": "ee57"
+    },
+    {
+      "AuthorID": 15,
+      "Name": "Harper Lee",
+      "Bio": "Author of To Kill a Mockingbird.",
+      "id": "4688"
+    },
+    {
+      "AuthorID": 16,
+      "Name": "Arthur Conan Doyle",
+      "Bio": "Creator of Sherlock Holmes.",
+      "id": "a769"
+    },
+    {
+      "AuthorID": 17,
+      "Name": "Leo Tolstoy",
+      "Bio": "Russian novelist.",
+      "id": "ead1"
+    },
+    {
+      "AuthorID": 18,
+      "Name": "Charles Dickens",
+      "Bio": "Victorian era novelist.",
+      "id": "47bc"
+    },
+    {
+      "AuthorID": 19,
+      "Name": "Khaled Hosseini",
+      "Bio": "Author of The Kite Runner.",
+      "id": "33ab"
+    },
+    {
+      "AuthorID": 20,
+      "Name": "Emily Brontë",
+      "Bio": "Known for Wuthering Heights.",
+      "id": "a9dd"
+    },
+    {
+      "id": "4b2f",
+      "Name": "Author A",
+      "Bio": "Author A is known for writing engaging fiction and fantasy novels.",
+      "AuthorID": 22
+    },
+    {
+      "id": "01d9",
+      "Name": "jk rowling",
+      "Bio": "Author A is known for writing engaging fiction and fantasy novels.",
+      "AuthorID": 23
+    }
+  ]
+}

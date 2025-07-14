@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lib.com - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --light-gray: #f8f9fa;
+        --dark-gray: #343a40;
+        --success-color: #28a745;
+      }
+      body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background-color: var(--primary-color) !important;
+      }
+      .sidebar {
+        background-color: var(--primary-color);
+        min-height: calc(100vh - 56px);
+        transition: all 0.3s ease;
+      }
+      .sidebar .nav-link {
+        color: rgba(255,255,255,0.8);
+        border-radius: 6px;
+        margin-bottom: 6px;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+      }
+      .sidebar .nav-link:hover {
+        color: white;
+        background-color: rgba(255,255,255,0.1);
+      } 
+      .sidebar .nav-link.active {
+        background-color: var(--secondary-color);
+        color: white;
+        font-weight: 500;
+      }     
+      .sidebar .nav-link i {
+        width: 20px;
+        text-align: center;
+        margin-right: 10px;
+      }      
+      .metric-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: none;
+        overflow: hidden;
+      }      
+      .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+      }     
+      .metric-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: rgba(255,255,255,0.8);
+      }     
+      .metric-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+      }      
+      .metric-title {
+        font-size: 1rem;
+        font-weight: 500;
+        opacity: 0.9;
+      }     
+      .metric-description {
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }      
+      .logout-link {
+        color: rgba(255,255,255,0.8);
+        transition: all 0.2s ease;
+      }      
+      .logout-link:hover {
+        color: white;
+        text-decoration: none;
+      }      
+      .overdue-badge {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#"><i class="fas fa-book me-2"></i>Lib.com</a>
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i> <span id="adminName">Admin</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid flex-grow-1">
+    <div class="row">
+      <!-- Sidebar -->
+      <aside class="col-md-3 col-lg-2 sidebar text-white p-3">
+        <h5 class="text-white mb-4"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h5>
+        <nav class="nav flex-column">
+          <a class="nav-link active" href="admin-dashboard.html">
+            <i class="fas fa-home"></i> Dashboard</a>
+          <a class="nav-link" href="person-management.html">
+            <i class="fas fa-users"></i> Person Management</a>
+          <a class="nav-link" href="book.html">
+            <i class="fas fa-book"></i> Resources</a>
+          <a class="nav-link" href="authors.html">
+            <i class="fas fa-user-edit"></i> Authors</a>
+          <a class="nav-link" href="reports.html">
+            <i class="fas fa-chart-bar"></i> Reports</a>
+          <a class="nav-link" href="user-queries.html">
+            <i class="fas fa-question-circle"></i> User Queries</a>
+          <a class="nav-link logout-link mt-4" href="#" id="logoutLink">
+            <i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+      </aside>
+      <!-- Main Content -->
+      <main class="col-md-9 col-lg-10 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          
+        </div>
+        <!-- Metrics Cards -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+          <div class="col">
+            <div class="card metric-card resources">
+              <div class="card-body">
+                <i class="fas fa-book metric-icon"></i>
+                <div class="metric-value" id="resourcesCount">0</div>
+                <div class="metric-title">Total Resources</div>
+                <div class="metric-description">Books, journals & media</div>
+              </div>
+        
+            </div>
+          </div>
+          <div class="col">
+            <div class="card metric-card returns">
+              <div class="card-body">
+                <i class="fas fa-exchange-alt metric-icon"></i>
+                <div class="metric-value" id="reportsCount">0</div>
+                <div class="metric-title">Recent Returns</div>
+                <div class="metric-description">Completed this week</div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col">
+            <div class="card metric-card users">
+              <div class="card-body">
+                <i class="fas fa-users metric-icon"></i>
+                <div class="metric-value" id="usersCount">0</div>
+                <div class="metric-title">Active Users</div>
+                <div class="metric-description">Library members</div>
+              </div>
+        
+            </div>
+          </div>
+          <div class="col">
+            <div class="card metric-card overdue">
+              <div class="card-body">
+                <i class="fas fa-clock metric-icon"></i>
+                <div class="metric-value" id="overdueCount">0</div>
+                <div class="metric-title">Overdue Items</div>
+                <div class="metric-description">Requiring attention</div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
+        <h4 class="mt-5"><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Overdue Books</h4>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+              <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Book Title</th>
+                <th>Due Date</th>
+                <th>Days Overdue</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="overdueTableBody">
+              <tr>
+                <td colspan="6" class="text-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer class="text-center py-3 border-top bg-white mt-auto">
+    <div class="container">
+      <small class="text-muted">&copy; 2024 Library Management System | v2.1.0</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // DOM Elements
+  const usersCountEl = document.getElementById("usersCount");
+  const resourcesCountEl = document.getElementById("resourcesCount");
+  const reportsCountEl = document.getElementById("reportsCount");
+  const overdueCountEl = document.getElementById("overdueCount");
+  const overdueTableBody = document.getElementById("overdueTableBody");
+  // API Endpoints
+  const userApi = "http://localhost:8080/api/registrations";
+  const booksApi = "http://localhost:8080/api/books";
+  const borrowApi = "http://localhost:8080/api/bookborrows";
+  // Data storage
+  let usersData = [];
+  let booksData = [];
+  let borrowData = [];
+  let dataLoaded = false;
+  // Date parsing utility
+  function parseDate(dateStr) {
+    if (!dateStr) return null;  
+    // Try ISO format first
+    const isoDate = new Date(dateStr);
+    if (!isNaN(isoDate)) return isoDate;
+    // Try DD/MM/YYYY format
+    if (typeof dateStr === 'string' && dateStr.includes("/")) {
+      const parts = dateStr.split('/');
+      if (parts.length === 3) {
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+      }
+    }   
+    return null;
+  }
+  // Format date for display
+  function formatDate(date) {
+    if (!date) return 'Unknown';
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  }
+  // Calculate days overdue
+  function getDaysOverdue(dueDate) {
+    if (!dueDate) return 'N/A';
+    const today = new Date();
+    const diffTime = today - dueDate;
+    return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+  }
+  // Fetch all data
+  async function fetchAllData() {
+    try {
+      // Fetch all endpoints in parallel
+      const [usersRes, booksRes, borrowRes] = await Promise.all([
+        fetch(userApi),
+        fetch(booksApi),
+        fetch(borrowApi)
+      ]);
+      // Check for errors
+      if (!usersRes.ok || !booksRes.ok || !borrowRes.ok) {
+        throw new Error('Failed to fetch data from one or more endpoints');
+      }
+      // Parse responses
+      usersData = await usersRes.json();
+      booksData = await booksRes.json();
+      borrowData = await borrowRes.json();
+      dataLoaded = true;
+      updateUI();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      showError();
+    }
+  }
+  // Update UI with fetched data
+  function updateUI() {
+    if (!dataLoaded) return;
+    // Update metric cards
+    usersCountEl.textContent = usersData.length;
+    resourcesCountEl.textContent = booksData.length;   
+    // Process returned books count
+    const returnedBooks = borrowData.filter(b => 
+      b.status && b.status.toLowerCase() === "returned"
+    );
+    reportsCountEl.textContent = returnedBooks.length;
+    // Process overdue books
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const overdueBooks = borrowData.filter(record => {
+      const status = record.status?.toLowerCase();
+      const dueDate = parseDate(record.dueDate || record.returnDate);
+      return status === "borrowed" && dueDate && dueDate < today;
+    });
+    overdueCountEl.textContent = overdueBooks.length;
+    // Update overdue books table
+    if (overdueBooks.length === 0) {
+      overdueTableBody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center text-muted">
+            <i class="fas fa-check-circle me-2"></i>
+            No overdue books found
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    overdueTableBody.innerHTML = overdueBooks.map(record => {
+      // Find user information
+      const user = usersData.find(u => 
+        u.id === record.userId || 
+        u.email === record.email
+      ) || {};
+      // Find book information
+      const book = booksData.find(b => b.id === record.bookId) || {};     
+      // Parse dates
+      const dueDate = parseDate(record.dueDate || record.returnDate);
+      const daysOverdue = getDaysOverdue(dueDate);
+      return `
+        <tr>
+          <td>${user.fullName || user.name || 'Unknown User'}</td>
+          <td>${user.email || 'No email'}</td>
+          <td>${book.title || record.bookTitle || 'Unknown Book'}</td>
+          <td>${formatDate(dueDate)}</td>
+          <td>
+            <span class="overdue-badge">${daysOverdue} days</span>
+          </td>
+          <td class="text-danger fw-bold">Overdue</td>
+        </tr>
+      `;
+    }).join('');
+  }
+  // Show error message
+  function showError() {
+    overdueTableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center text-danger">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Error loading data. Please try again later.
+        </td>
+      </tr>
+    `;
+  }
+  // Logout functionality
+  document.getElementById("logoutLink").addEventListener("click", function(e) {
+    e.preventDefault();
+    window.location.href = "/login.html";
+  });
+  document.getElementById("logoutBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    window.location.href = "/login.html";
+  });
+  // Initialize
+  fetchAllData();
+});
+</script>
+</body>
+</html>

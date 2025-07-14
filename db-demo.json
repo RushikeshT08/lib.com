@@ -1,0 +1,70 @@
+{
+  "categories": [
+    {
+      "id": "3",
+      "AuthorId": "3",
+      "Name": "Chimamanda Ngozi Adichie",
+      "Bio": "A Nigerian writer acclaimed for her novels and talks on feminism and identity."
+    },
+    {
+      "id": "4",
+      "AuthorId": 4,
+      "Name": "Haruki Murakami",
+      "Bio": "A Japanese author famous for blending magical realism with deep psychological insight."
+    },
+    {
+      "id": "5",
+      "AuthorId": 5,
+      "Name": "George R.R. Martin",
+      "Bio": "Renowned for the epic fantasy series 'A Song of Ice and Fire', adapted into 'Game of Thrones'."
+    },
+    {
+      "id": "6",
+      "AuthorId": 6,
+      "Name": "Margaret Atwood",
+      "Bio": "Canadian author and poet known for her speculative fiction and feminist themes."
+    },
+    {
+      "id": "7",
+      "AuthorId": 7,
+      "Name": "Neil Gaiman",
+      "Bio": "A versatile author of novels, comics, and children's books, known for his fantastical storytelling."
+    },
+    {
+      "id": "8",
+      "AuthorId": 8,
+      "Name": "J.K. Rowling",
+      "Bio": "British writer best known for the Harry Potter series, which became a global phenomenon."
+    },
+    {
+      "id": "9",
+      "AuthorId": 9,
+      "Name": "Khaled Hosseini",
+      "Bio": "Afghan-American novelist who writes deeply moving stories about family and home."
+    },
+    {
+      "id": "10",
+      "AuthorId": 10,
+      "Name": "Dan Brown",
+      "Bio": "Author of popular thrillers like 'The Da Vinci Code' that combine history, art, and puzzles."
+    },
+    {
+      "id": "1744712298858",
+      "AuthorId": "2",
+      "Name": "James Patterson",
+      "Bio": "A prolific author of thrillers and mystery novels with numerous bestsellers to his name."
+    },
+    {
+      "id": "1744712307058",
+      "AuthorId": "1",
+      "Name": "James Patterson",
+      "Bio": "A prolific author of thrillers and mystery novels with numerous bestsellers to his name."
+    },
+    {
+      "id": "1744713666865",
+      "AuthorId": "11",
+      "Name": "Rushikesh thange",
+      "Bio": "A prolific author of thrillers and mystery books with numerous bestseller books to his name."
+    }
+  ]
+}

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --light-gray: #f8f9fa;
+        --dark-gray: #343a40;
+        --success-color: #28a745;
+      }
+      
+      body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background-color: var(--primary-color) !important;
+      }
+      
+      .sidebar {
+        background-color: var(--primary-color);
+        min-height: calc(100vh - 56px);
+        transition: all 0.3s ease;
+      }
+      
+      .sidebar .nav-link {
+        color: rgba(255,255,255,0.8);
+        border-radius: 6px;
+        margin-bottom: 6px;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+      }
+      
+      .sidebar .nav-link:hover {
+        color: white;
+        background-color: rgba(255,255,255,0.1);
+      }
+      
+      .sidebar .nav-link.active {
+        background-color: var(--secondary-color);
+        color: white;
+        font-weight: 500;
+      }
+      
+      .sidebar .nav-link i {
+        width: 20px;
+        text-align: center;
+        margin-right: 10px;
+      }
+      
+      .content {
+        padding: 20px;
+        background-color: #f5f7fa;
+        flex: 1;
+      }
+
+      footer {
+        background-color: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      table th, table td {
+        vertical-align: middle;
+      }
+      .form-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        padding: 30px;
+      }
+      .card {
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      .table th {
+        background-color: #e9ecef;
+      }
+      .table i {
+        cursor: pointer;
+      }
+      .form-section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#"><i class="fas fa-book me-2"></i>Lib.com</a>
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i> <span id="adminName">Admin</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid flex-grow-1">
+    <div class="row">
+      <!-- Sidebar -->
+      <aside class="col-md-3 col-lg-2 sidebar text-white p-3">
+        <h5 class="text-white mb-4"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h5>
+        <nav class="nav flex-column">
+          <a class="nav-link" href="admin-dashboard.html">
+            <i class="fas fa-home"></i> Dashboard
+          </a>
+          <a class="nav-link" href="person-management.html">
+            <i class="fas fa-users"></i> Person Management
+          </a>
+          <a class="nav-link active" href="book.html">
+            <i class="fas fa-book"></i> Resources
+          </a>
+          <a class="nav-link" href="authors.html">
+            <i class="fas fa-user-edit"></i> Authors
+          </a>
+          <a class="nav-link" href="reports.html">
+            <i class="fas fa-chart-bar"></i> Reports
+          </a>
+          <a class="nav-link" href="user-queries.html">
+            <i class="fas fa-question-circle"></i> User Queries
+          </a>
+          <a class="nav-link logout-link mt-4" href="#" id="logoutLink">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="col-md-9 col-lg-10 content">
+        <h2 class="mb-4"><i class="fas fa-cogs me-2"></i>Manage Books</h2>
+
+        <div class="container mt-3">
+          <!-- Search Bar -->
+          <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by Book Title..." />
+  
+          <!-- Form for Adding and Updating Books -->
+          <form id="bookForm" class="form-section mb-4">
+              <div class="mb-3">
+                  <label for="bookTitle" class="form-label">Book Title</label>
+                  <input type="text" id="bookTitle" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="authorSelect" class="form-label">Author</label>
+                  <select id="authorSelect" class="form-select" required>
+                    <option value="">Select Author</option>
+                  </select>
+              </div>
+              <div class="mb-3">
+                  <label for="isbn" class="form-label">Available copies</label>
+                  <input type="text" id="isbn" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="bookUrl" class="form-label">Book Image URL</label>
+                  <input type="url" id="bookUrl" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="genre" class="form-label">Genre</label>
+                  <input type="text" id="genre" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea id="description" class="form-control" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Book</button>
+          </form>
+  
+          <!-- Book List Table -->
+          <table class="table table-bordered table-hover">
+              <thead class="table-light">
+                  <tr>
+                      <th>Image</th>
+                      <th>Title</th>
+                      <th>Author</th>
+                      <th>Genre</th>
+                      <th>Available copies</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody id="bookTableBody">
+                  <!-- Dynamic rows will be added here -->
+              </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 border-top bg-white mt-auto">
+    <div class="container">
+      <small class="text-muted">&copy; 2024 Library Management System | v2.1.0</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const apiUrl = "http://localhost:8080/api/books";
+      const authorsUrl = "http://localhost:8080/Authors";
+
+      // DOM Elements
+      const form = document.getElementById("bookForm");
+      const bookTitleInput = document.getElementById("bookTitle");
+      const authorSelect = document.getElementById("authorSelect");
+      const isbnInput = document.getElementById("isbn");
+      const bookUrlInput = document.getElementById("bookUrl");
+      const genreInput = document.getElementById("genre");
+      const descriptionInput = document.getElementById("description");
+      const submitBtn = document.querySelector("button[type='submit']");
+      const searchInput = document.getElementById("searchInput");
+
+      // State variables
+      let editId = null;
+      let allBooks = [];
+      let allAuthors = [];
+      let sortDirection = 1;
+
+      // Logout functionality
+      function handleLogout(e) {
+        e.preventDefault();
+        try {
+          // Clear all authentication-related data
+          sessionStorage.clear();
+          localStorage.clear();
+          
+          
+          // Redirect to login page
+          window.location.href = "/login.html";
+        } catch (error) {
+          console.error("Logout error:", error);
+          window.location.href = "/login.html";
+        }
+      }
+
+      // Initialize logout event listeners
+      function initLogoutListeners() {
+        const logoutBtn = document.getElementById("logoutBtn");
+        const logoutLink = document.getElementById("logoutLink");
+        
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", handleLogout);
+        }
+        
+        if (logoutLink) {
+          logoutLink.addEventListener("click", handleLogout);
+        }
+      }
+
+      // Populate authors dropdown
+      function loadAuthors() {
+        fetch(authorsUrl)
+          .then(res => res.json())
+          .then(data => {
+            allAuthors = data;
+            authorSelect.innerHTML = `<option value="">Select Author</option>`;
+            data.forEach(author => {
+              const option = document.createElement("option");
+              option.value = author.name;
+              option.textContent = author.name;
+              authorSelect.appendChild(option);
+            });
+          })
+          .catch(error => console.error("Error loading authors:", error));
+      }
+
+      // Search filter
+      function setupSearch() {
+        searchInput.addEventListener("input", () => {
+          const searchTerm = searchInput.value.toLowerCase();
+          const filtered = allBooks.filter(book =>
+            book.bookTitle.toLowerCase().includes(searchTerm)
+          );
+          renderBooks(filtered);
+        });
+      }
+
+      // Form validation
+      function validateForm() {
+        let isValid = true;
+        [bookTitleInput, isbnInput, bookUrlInput, genreInput, descriptionInput].forEach(input => {
+          if (input.value.trim().length < 2) {
+            input.classList.add("is-invalid");
+            input.classList.remove("is-valid");
+            isValid = false;
+          } else {
+            input.classList.remove("is-invalid");
+            input.classList.add("is-valid");
+          }
+        });
+
+        if (!authorSelect.value) {
+          authorSelect.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          authorSelect.classList.remove("is-invalid");
+        }
+
+        return isValid;
+      }
+
+      // Form submission
+      function setupFormSubmit() {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (!validateForm()) return;
+
+          const bookData = {
+            bookTitle: bookTitleInput.value.trim(),
+            author: authorSelect.value,
+            isbn: isbnInput.value.trim(),
+            bookUrl: bookUrlInput.value.trim(),
+            genre: genreInput.value.trim(),
+            description: descriptionInput.value.trim()
+          };
+
+          const requestMethod = editId ? "PUT" : "POST";
+          const requestUrl = editId ? `${apiUrl}/${editId}` : apiUrl;
+
+          fetch(requestUrl, {
+            method: requestMethod,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookData)
+          })
+          .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+          })
+          .then(() => {
+            fetchAndRenderBooks();
+            form.reset();
+            clearValidation();
+            submitBtn.textContent = "Add Book";
+            editId = null;
+          })
+          .catch(error => console.error("Error saving book:", error));
+        });
+      }
+
+      // Clear form validation
+      function clearValidation() {
+        [bookTitleInput, isbnInput, bookUrlInput, genreInput, descriptionInput, authorSelect].forEach(input => {
+          input.classList.remove("is-valid", "is-invalid");
+        });
+      }
+
+      // Fetch and render books
+      function fetchAndRenderBooks() {
+        fetch(apiUrl)
+          .then(res => res.json())
+          .then(data => {
+            allBooks = data;
+            renderBooks(data);
+          })
+          .catch(error => console.error("Error fetching books:", error));
+      }
+
+      // Render books to table
+      function renderBooks(books) {
+        const tbody = document.getElementById("bookTableBody");
+        tbody.innerHTML = "";
+
+        books.forEach(book => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td><img src="${book.bookUrl}" alt="${book.bookTitle}" style="width: 60px; height: 80px; object-fit: cover;" /></td>
+            <td>${book.bookTitle}</td>
+            <td>${book.author}</td>
+            <td>${book.genre}</td>
+            <td>${book.isbn}</td>
+            <td>${book.description}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${book.id}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${book.id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        // Setup edit buttons
+        document.querySelectorAll(".edit-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            loadBookForEdit(id);
+          });
+        });
+
+        // Setup delete buttons
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            deleteBook(id);
+          });
+        });
+      }
+
+      // Load book for editing
+      function loadBookForEdit(id) {
+        fetch(`${apiUrl}/${id}`)
+          .then(res => res.json())
+          .then(data => {
+            bookTitleInput.value = data.bookTitle;
+            authorSelect.value = data.author;
+            isbnInput.value = data.isbn;
+            bookUrlInput.value = data.bookUrl;
+            genreInput.value = data.genre;
+            descriptionInput.value = data.description;
+            editId = id;
+            submitBtn.textContent = "Update Book";
+          })
+          .catch(error => console.error("Error loading book for edit:", error));
+      }
+
+      // Delete book
+      function deleteBook(id) {
+        if (confirm("Are you sure you want to delete this book?")) {
+          fetch(`${apiUrl}/${id}`, {
+            method: "DELETE"
+          })
+          .then(() => fetchAndRenderBooks())
+          .catch(error => console.error("Error deleting book:", error));
+        }
+      }
+
+      // Setup sorting
+      function setupSorting() {
+        const titleHeader = document.querySelector("th:nth-child(2)");
+        if (titleHeader) {
+          titleHeader.style.cursor = "pointer";
+          titleHeader.addEventListener("click", () => {
+            const sorted = [...allBooks].sort((a, b) =>
+              a.bookTitle.localeCompare(b.bookTitle) * sortDirection
+            );
+            sortDirection *= -1;
+            renderBooks(sorted);
+          });
+        }
+      }
+
+      // Initialize the application
+      function init() {
+        initLogoutListeners();
+        loadAuthors();
+        fetchAndRenderBooks();
+        setupFormSubmit();
+        setupSearch();
+        setupSorting();
+      }
+
+      // Start the application
+      init();
+    })();
+  </script>
+</body>
+</html>
